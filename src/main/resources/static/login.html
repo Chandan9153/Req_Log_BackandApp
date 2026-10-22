@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | Modern User Authentication</title>
+  <meta name="description" content="Secure sign-in with Spring Security, session cookies, and BCrypt encryption.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Ambient background lighting -->
+  <div class="ambient-background">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+
+  <div class="auth-page-wrapper">
+    <div class="auth-card">
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="auth-logo-badge">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <h1 class="auth-title">Welcome <span class="gradient-text">Back</span></h1>
+        <p class="auth-subtitle">Please enter your credentials to access your dashboard.</p>
+      </div>
+
+      <!-- Inline Alert Box -->
+      <div id="login-alert" class="alert-box"></div>
+
+      <!-- Login Form -->
+      <form id="login-form" novalidate>
+        <!-- Email Address or Username -->
+        <div class="form-group" id="group-email">
+          <label for="email" class="form-label">Email or Username</label>
+          <div class="input-wrapper">
+            <span class="input-icon-left">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+              </svg>
+            </span>
+            <input type="text" id="email" name="email" class="form-control" placeholder="john@example.com or username" required autocomplete="username">
+          </div>
+          <div class="form-error-text"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" id="group-password">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon-left">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </span>
+            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" data-target="password" aria-label="Show password">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="form-error-text"></div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-options-row">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="rememberMe" name="rememberMe">
+            <span class="checkbox-visual">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            Remember me
+          </label>
+          <a href="#" id="forgot-password-trigger" class="forgot-password-link">Forgot password?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="login-btn" class="btn btn-primary">
+          <span class="spinner"></span>
+          <span class="btn-text">Sign In</span>
+        </button>
+      </form>
+
+      <!-- Footer Link to Register -->
+      <div class="auth-footer">
+        Don't have an account? <a href="/register.html" id="link-to-register">Register now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgot-password-modal" class="modal-backdrop">
+    <div class="modal-box">
+      <button type="button" class="modal-close-btn" id="modal-close" aria-label="Close modal">&times;</button>
+      <div class="auth-header" style="margin-bottom: 1.5rem;">
+        <div class="auth-logo-badge" style="width: 48px; height: 48px;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+          </svg>
+        </div>
+        <h2 class="auth-title" style="font-size: 1.35rem;">Reset Password</h2>
+        <p class="auth-subtitle" style="font-size: 0.85rem;">Enter your email address and we'll generate a secure password reset link.</p>
+      </div>
+
+      <div id="modal-alert" class="alert-box"></div>
+
+      <form id="forgot-password-form" novalidate>
+        <div class="form-group" id="group-resetEmail">
+          <label for="resetEmail" class="form-label">Registered Email</label>
+          <div class="input-wrapper">
+            <span class="input-icon-left">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </span>
+            <input type="email" id="resetEmail" name="resetEmail" class="form-control" placeholder="name@example.com" required>
+          </div>
+          <div class="form-error-text"></div>
+        </div>
+
+        <button type="submit" id="reset-submit-btn" class="btn btn-primary" style="margin-top: 1rem;">
+          <span class="spinner"></span>
+          <span class="btn-text">Generate Reset Link</span>
+        </button>
+      </form>
+
+      <div id="modal-token-result" style="display: none; margin-top: 1.25rem; padding: 1rem; background: #eff6ff; border-radius: var(--radius-md); border: 1px solid #bfdbfe; font-size: 0.85rem;">
+        <p style="font-weight: 700; color: #1e40af; margin-bottom: 0.5rem;">Password Reset Link Generated:</p>
+        <p style="color: #1e3a8a; margin-bottom: 0.75rem; word-break: break-all;" id="modal-link-display"></p>
+        <a id="modal-direct-link" href="#" class="btn btn-primary" style="height: 38px; font-size: 0.85rem;">Proceed to Reset Password</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>
